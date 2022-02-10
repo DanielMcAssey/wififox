@@ -30,27 +30,29 @@ function updateMenu() {
       click: () => {
         if (!isConnected && !isConnecting) {
           isConnecting = true
-          wififox.connect(silentMode).then(() => {
-            isConnected = true
-            isConnecting = false
-            updateMenu()
-          })
-              .then(async () => {
-                validMacs = await wififox.listValidMacs()
+          wififox
+              .connect(silentMode)
+              .then(() => {
+                isConnected = true
+                isConnecting = false
                 updateMenu()
+              })
+              .then(async () => {
+                validMacs = await wififox.listValidMacs();
+                updateMenu();
               })
               .catch((err) => {
                 isConnected = false
                 isConnecting = false
                 dialog.showErrorBox('Could Not Connect', err.message)
-                updateMenu()
-              })
-          updateMenu()
+                updateMenu();
+              });
+          updateMenu();
         } else if (isConnected) {
-          wififox.reset()
-          isConnected = false
-          isConnecting = false
-          updateMenu()
+          wififox.reset();
+          isConnected = false;
+          isConnecting = false;
+          updateMenu();
         }
       }
     },
@@ -63,15 +65,15 @@ function updateMenu() {
           type: 'normal', label: isScanning ? 'Scanning...' : (silentMode ? "Scan Disabled in Silent Mode" : 'Scan'), enabled: !silentMode && !isScanning, click: () => {
             wififox.manualScan()
                 .then(async () => {
-                  isScanning = false
-                  updateMenu()
-                  validMacs = await wififox.listValidMacs()
-                  updateMenu()
+                  isScanning = false;
+                  updateMenu();
+                  validMacs = await wififox.listValidMacs();
+                  updateMenu();
                 })
                 .catch(err => {
-                  console.error(err)
-                  isScanning = false
-                  updateMenu()
+                  console.error(err);
+                  isScanning = false;
+                  updateMenu();
                 })
             isScanning = true
             updateMenu()
