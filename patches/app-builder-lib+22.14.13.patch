@@ -1,0 +1,18 @@
+diff --git a/node_modules/app-builder-lib/out/packager.js b/node_modules/app-builder-lib/out/packager.js
+index 369eb59..61f514c 100644
+--- a/node_modules/app-builder-lib/out/packager.js
++++ b/node_modules/app-builder-lib/out/packager.js
+@@ -221,11 +221,12 @@ class Packager {
+         this.eventEmitter.emit("artifactCreated", event);
+     }
+     async callArtifactBuildCompleted(event) {
+-        this.dispatchArtifactCreated(event);
+         const handler = platformPackager_1.resolveFunction(this.config.artifactBuildCompleted, "artifactBuildCompleted");
+         if (handler != null) {
+             await Promise.resolve(handler(event));
+         }
++
++        this.dispatchArtifactCreated(event);
+     }
+     async callAppxManifestCreated(path) {
+         const handler = platformPackager_1.resolveFunction(this.config.appxManifestCreated, "appxManifestCreated");

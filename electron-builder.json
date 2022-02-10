@@ -1,0 +1,164 @@
+{
+  "appId": "com.wififox.app",
+  "productName": "WiFiFox",
+  "copyright": "Copyright © 2022 Daniel McAssey",
+  "directories": {
+    "output": "release/",
+    "buildResources": "resources/"
+  },
+  "afterSign": "./notarize-app.js",
+  "artifactBuildCompleted": "./notarize-artifact.js",
+  "asar": true,
+  "asarUnpack": [
+    "**/*.node",
+    "**/*.wasm"
+  ],
+  "files": [
+    "**/*",
+    "resources",
+    "build",
+    "!notarize-app.js",
+    "!notarize-artifact.js",
+    "!.github",
+    "!.vscode",
+    "!.idea",
+    "!.code-workspace",
+    "!.npmrc",
+    "!*.md",
+    "!*.log",
+    "!package.json",
+    "!package-lock.json",
+    "!*.map",
+    "!*.audit-ci.json",
+    "!*.gitignore",
+    "!*.releaserc.yml",
+    "!release/",
+    "!patches/",
+    "!.electron-symbols/"
+  ],
+  "win": {
+    "icon": "assets",
+    "legalTrademarks": "Copyright © 2021 Daniel McAssey Limited",
+    "publisherName": "Daniel McAssey",
+    "target": [
+      {
+        "arch": ["ia32", "x64"],
+        "target": "nsis-web"
+      },
+      {
+        "arch": ["ia32", "x64"],
+        "target": "nsis"
+      },
+      {
+        "arch": "ia32",
+        "target": "portable"
+      },
+      {
+        "arch": ["ia32", "x64"],
+        "target": "msi"
+      }
+    ]
+  },
+  "portable": {
+    "artifactName": "${name}-v${version}-${arch}-portable.${ext}",
+    "splashImage": "assets/splash.bmp"
+  },
+  "msi": {
+    "artifactName": "${name}-v${version}-${arch}-full.${ext}",
+    "shortcutName": "${productName}",
+    "menuCategory": "WiFiFox",
+    "runAfterFinish": true
+  },
+  "nsisWeb": {
+    "artifactName": "${name}-v${version}-${arch}-web.${ext}",
+    "installerIcon": "assets/icon.ico",
+    "installerHeaderIcon": "assets/icon/icon.ico",
+    "shortcutName": "${productName}",
+    "deleteAppDataOnUninstall": true,
+    "differentialPackage": true,
+    "language": "2057",
+    "guid": "45ac2ddb-fdd8-4b68-a07a-d4bd76d791a9",
+    "menuCategory": "WiFiFox",
+    "runAfterFinish": true,
+    "license": "resources/eula.rtf"
+  },
+  "nsis": {
+    "artifactName": "${name}-v${version}-full.${ext}",
+    "installerIcon": "dist/assets/icons/favicon.ico",
+    "installerHeaderIcon": "dist/assets/icons/favicon.ico",
+    "shortcutName": "${productName}",
+    "deleteAppDataOnUninstall": true,
+    "language": "2057",
+    "guid": "45ac2ddb-fdd8-4b68-a07a-d4bd76d791a9",
+    "menuCategory": "WiFiFox",
+    "runAfterFinish": true,
+    "license": "resources/eula.rtf"
+  },
+  "mac": {
+    "category": "public.app-category.productivity",
+    "artifactName": "${name}-v${version}-${arch}.${ext}",
+    "icon": "assets/icon.icns",
+    "target": [
+      {
+        "arch": "x64",
+        "target": "pkg"
+      },
+      {
+        "arch": "x64",
+        "target": "mas"
+      },
+      {
+        "arch": "x64",
+        "target": "dmg"
+      },
+      {
+        "arch": "x64",
+        "target": "zip"
+      }
+    ],
+    "darkModeSupport": true,
+    "hardenedRuntime": true,
+    "identity": "Daniel McAssey",
+    "entitlements": "resources/entitlements.mac.plist",
+    "entitlementsInherit": "resources/entitlements.mac.plist"
+  },
+  "dmg": {
+    "iconSize": 160,
+    "icon": "assets/icon.icns",
+    "contents": [
+      {
+        "x": 180,
+        "y": 200
+      },
+      {
+        "x": 480,
+        "y": 200,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ]
+  },
+  "mas": {
+    "artifactName": "${name}-v${version}-${arch}-mas.${ext}",
+    "entitlements": "resources/entitlements.mas.plist",
+    "entitlementsInherit": "resources/entitlements.mas.inherit.plist"
+  },
+  "pkg": {
+    "license": "resources/eula.rtf"
+  },
+  "linux": {
+    "artifactName": "${name}-v${version}-${arch}.${ext}",
+    "icon": "assets",
+    "category": "Utility;GNOME;GTK;Network",
+    "description": "WiFiFox",
+    "target": [
+      {
+        "arch": "x64",
+        "target": "AppImage"
+      }
+    ]
+  },
+  "appImage": {
+    "license": "resources/eula.rtf"
+  }
+}

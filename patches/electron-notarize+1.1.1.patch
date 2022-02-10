@@ -1,0 +1,37 @@
+diff --git a/node_modules/electron-notarize/lib/notarytool.js b/node_modules/electron-notarize/lib/notarytool.js
+index 40665bf..742e7ea 100644
+--- a/node_modules/electron-notarize/lib/notarytool.js
++++ b/node_modules/electron-notarize/lib/notarytool.js
+@@ -51,19 +51,25 @@ function notarizeAndWaitForNotaryTool(opts) {
+     return __awaiter(this, void 0, void 0, function* () {
+         d('starting notarize process for app:', opts.appPath);
+         return yield helpers_1.withTempDir((dir) => __awaiter(this, void 0, void 0, function* () {
+-            const zipPath = path.resolve(dir, `${path.basename(opts.appPath, '.app')}.zip`);
+-            d('zipping application to:', zipPath);
+-            const zipResult = yield spawn_1.spawn('ditto', ['-c', '-k', '--sequesterRsrc', '--keepParent', path.basename(opts.appPath), zipPath], {
++            const fileExt = path.extname(opts.appPath);
++            var filePath;
++            if (fileExt === '.dmg' || fileExt === '.pkg') {
++              filePath = path.resolve(dir, opts.appPath)
++            } else {
++              filePath = path.resolve(dir, `${path.parse(opts.appPath).name}.zip`);
++              d('zipping application to:', filePath);
++              const zipResult = yield spawn_1.spawn('ditto', ['-c', '-k', '--sequesterRsrc', '--keepParent', path.basename(opts.appPath), filePath], {
+                 cwd: path.dirname(opts.appPath),
+-            });
+-            if (zipResult.code !== 0) {
++              });
++              if (zipResult.code !== 0) {
+                 throw new Error(`Failed to zip application, exited with code: ${zipResult.code}\n\n${zipResult.output}`);
++              }
++              d('zip succeeded, attempting to upload to Apple');
+             }
+-            d('zip succeeded, attempting to upload to Apple');
+             const notarizeArgs = [
+                 'notarytool',
+                 'submit',
+-                zipPath,
++                filePath,
+                 ...authorizationArgs(opts),
+                 '--wait',
+                 '--output-format',

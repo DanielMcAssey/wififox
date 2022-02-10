@@ -5,30 +5,36 @@
   "main": "main.js",
   "bin": "main.js",
   "scripts": {
-    "start": "electron --no-sandbox .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder -mwl",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps && patch-package",
+    "start": "npm run electron:serve",
+    "electron": "electron",
+    "electron:serve-tsc": "tsc -p tsconfig.serve.json",
+    "electron:serve": "electron . --serve",
+    "electron:local": "electron .",
+    "electron:linux": "electron-builder build --linux",
+    "electron:windows": "electron-builder build --windows",
+    "electron:mac": "electron-builder build --mac",
+    "electron:linux:publish": "npm run electron:linux -- --publish always",
+    "electron:windows:publish": "npm run electron:windows -- --publish always",
+    "electron:mac:publish": "npm run electron:mac -- --publish always",
+    "audit-dependencies": "audit-ci --config .audit-ci.json"
   },
   "author": "",
   "license": "GPLv3",
   "dependencies": {
+    "is-elevated": "^3.0.0",
     "cidr-range": "^2.0.0",
-    "default-gateway": "^6.0.1",
-    "electron-builder": "^22.7.0",
-    "node-wifi": "^2.0.12",
-    "request": "^2.88.2",
-    "spoof": "^2.0.1",
-    "electron": "^9.0.5"
+    "default-gateway": "^6.0.3",
+    "node-wifi": "^2.0.16",
+    "node-fetch": "^2.6.7",
+    "spoof": "^2.0.4"
   },
-  "build": {
-    "appId": "com.wififox.app",
-    "productName": "WiFiFox",
-    "mac": {
-      "identity": null
-    },
-    "linux": {
-      "category": "Utility"
-    }
+  "devDependencies": {
+    "electron": "^17.0.0",
+    "electron-builder": "22.14.13",
+    "electron-builder-squirrel-windows": "^22.14.13",
+    "electron-download": "^4.1.1",
+    "electron-notarize": "^1.1.1",
+    "patch-package": "^6.4.7"
   }
 }
